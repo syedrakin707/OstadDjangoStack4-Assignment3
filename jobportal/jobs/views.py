@@ -77,8 +77,19 @@ def view_applicants(request, job_id):
 # Dashboard for Applicant
 @login_required
 def applicant_dashboard(request):
+    if request.user.profile.role != 'applicant':
+        return render(request, 'unauthorized.html')
+
+    status_filter = request.GET.get('status')
     applications = Application.objects.filter(applicant=request.user)
-    return render(request, 'applicant_dashboard.html', {'applications': applications})
+
+    if status_filter in ['pending', 'approved', 'rejected']:
+        applications = applications.filter(status=status_filter)
+
+    return render(request, 'applicant_dashboard.html', {
+        'applications': applications,
+        'status_filter': status_filter
+    })
 
 # Both Classes - Method for Searching Job
 @login_required
@@ -114,3 +125,20 @@ def apply_job(request, job_id):
     else:
         form = ApplicationForm()
     return render(request, 'apply_job.html', {'form': form, 'job': job})
+
+# Employee Only - Method for Reviewing Applications
+@login_required
+def review_applications(request, application_id):
+    application = get_object_or_404(Application, id=application_id)
+
+    if application.job.posted_by != request.user:
+        return render(request, 'unauthorized.html')
+
+    if request.method == 'POST':
+        decision = request.POST.get('decision')
+        if decision in ['Approved', 'Rejected']:
+            application.status = decision
+            application.save()
+            return redirect('view_applicants', job_id=application.job.id)
+
+    return render(request, 'review_applications.html', {'application': application})

@@ -1,14 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Your Applications</h2>
-<ul class="list-group">
-    {% for app in applications %}
-    <li class="list-group-item">
-        <strong>{{ app.job.title }}</strong> at {{ app.job.company_name }}<br>
-        Applied on: {{ app.applied_at }}
-    </li>
-    {% empty %}
-    <li class="list-group-item">You haven’t applied to any jobs yet.</li>
-    {% endfor %}
-</ul>
+
+<form method="get" class="mb-3">
+    <select name="status" class="form-select" onchange="this.form.submit()">
+        <option value="">All Statuses</option>
+        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+        <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+        <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+    </select>
+</form>
+
+{% for app in applications %}
+    <div class="card my-2">
+        <div class="card-body">
+            <h5>{{ app.job.title }} — {{ app.job.company_name }}</h5>
+            <p><strong>Status:</strong> 
+                <span class="
+                    {% if app.status == 'approved' %}text-success
+                    {% elif app.status == 'rejected' %}text-danger
+                    {% else %}text-secondary
+                    {% endif %}
+                ">{{ app.status|capfirst }}</span>
+            </p>
+            <a href="{{ app.resume.url }}" download>Download Resume</a>
+        </div>
+    </div>
+{% empty %}
+    <p>You have not submitted any applications yet.</p>
+{% endfor %}
 {% endblock %}

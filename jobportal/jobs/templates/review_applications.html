@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Review Application</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5>Applicant: {{ application.applicant.username }}</h5>
+        <p><strong>Cover Letter:</strong> {{ application.cover_letter }}</p>
+        <p><a href="{{ application.resume.url }}" class="btn btn-link" target="_blank">Download Resume</a></p>
+        <p>Status:
+            <span class="badge {% if application.status == 'Approved' %}bg-success
+                              {% elif application.status == 'Rejected' %}bg-danger
+                              {% else %}bg-secondary{% endif %}">
+                {{ application.status }}
+            </span>
+        </p>
+
+        {% if application.status|lower == 'pending' %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="decision" value="Approved" class="btn btn-success">Approve</button>
+                <button type="submit" name="decision" value="Rejected" class="btn btn-danger">Reject</button>
+            </form>
+        {% else %}
+            <p>This application has already been reviewed.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
