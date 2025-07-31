@@ -5,9 +5,9 @@
 <form method="get" class="mb-3">
     <select name="status" class="form-select" onchange="this.form.submit()">
         <option value="">All Statuses</option>
-        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
-        <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
-        <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+        <option value="Pending" {% if status_filter == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="Approved" {% if status_filter == 'Approved' %}selected{% endif %}>Approved</option>
+        <option value="Rejected" {% if status_filter == 'Rejected' %}selected{% endif %}>Rejected</option>
     </select>
 </form>
 
@@ -17,8 +17,8 @@
             <h5>{{ app.job.title }} — {{ app.job.company_name }}</h5>
             <p><strong>Status:</strong> 
                 <span class="
-                    {% if app.status == 'approved' %}text-success
-                    {% elif app.status == 'rejected' %}text-danger
+                    {% if app.status == 'Approved' %}text-success
+                    {% elif app.status == 'Rejected' %}text-danger
                     {% else %}text-secondary
                     {% endif %}
                 ">{{ app.status|capfirst }}</span>
