@@ -83,7 +83,7 @@ def applicant_dashboard(request):
     status_filter = request.GET.get('status')
     applications = Application.objects.filter(applicant=request.user)
 
-    if status_filter in ['pending', 'approved', 'rejected']:
+    if status_filter in ['Pending', 'Approved', 'Rejected']:
         applications = applications.filter(status=status_filter)
 
     return render(request, 'applicant_dashboard.html', {
