@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Applicants for {{ job.title }}</h2>
+<ul class="list-group">
+    {% for app in applications %}
+    <li class="list-group-item">
+        <strong>{{ app.applicant.username }}</strong><br>
+        Cover Letter: {{ app.cover_letter }}<br>
+        <a href="{{ app.resume.url }}" target="_blank">Download Resume</a>
+    </li>
+    {% empty %}
+    <li class="list-group-item">No applications yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

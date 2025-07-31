@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Posted Jobs</h2>
+<a href="{% url 'post_job' %}" class="btn btn-primary mb-3">Post New Job</a>
+<ul class="list-group">
+    {% for job in jobs %}
+    <li class="list-group-item d-flex justify-content-between">
+        <span>{{ job.title }} - {{ job.company_name }}</span>
+        <a href="{% url 'view_applicants' job.id %}">View Applicants</a>
+    </li>
+    {% empty %}
+    <li class="list-group-item">You haven’t posted any jobs yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Applications</h2>
+<ul class="list-group">
+    {% for app in applications %}
+    <li class="list-group-item">
+        <strong>{{ app.job.title }}</strong> at {{ app.job.company_name }}<br>
+        Applied on: {{ app.applied_at }}
+    </li>
+    {% empty %}
+    <li class="list-group-item">You haven’t applied to any jobs yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
